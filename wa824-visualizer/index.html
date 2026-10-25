@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WA824 Visualizer</title>
+  <link rel="stylesheet" href="./src/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>WA824 Visualizer</h1>
+      <p>Python compiler bridge → real JS assembler → replaceable CPU backend</p>
+    </div>
+    <div class="status-badges">
+      <span class="badge warn">Compiler: Python C + stack ABI / runtime</span>
+      <span class="badge ok">Assembler: WA824 24-bit</span>
+      <span class="badge ok">CPU: pluggable CPU registry</span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="panel source-panel">
+      <div class="panel-head">
+        <div>
+          <h2 id="sourceHeading">C Source</h2>
+          <p id="sourceHint">Freestanding C subset → Python compiler (localhost).</p>
+        </div>
+        <div class="build-actions">
+          <label>Input <select id="sourceMode"><option value="c" selected>C / Python compiler</option><option value="asm">Assembly direct</option></select></label>
+          <label>CPU <select id="cpuMode"><option value="">Loading CPUs…</option></select></label>
+          <button id="compileBtn" class="primary">Build &amp; Load</button>
+        </div>
+      </div>
+      <div class="editor-shell">
+        <pre id="sourceGutter" class="gutter" aria-hidden="true"></pre>
+        <textarea id="sourceEditor" spellcheck="false" aria-label="C source editor"></textarea>
+      </div>
+      <div class="console-input">
+        <label for="stdinInput">Program stdin (entered before Build &amp; Load)</label>
+        <textarea id="stdinInput" rows="2" spellcheck="false" placeholder="e.g. 12 30"></textarea>
+      </div>
+      <div id="compileMessage" class="message" aria-live="polite"></div>
+    </section>
+
+    <section class="panel assembly-panel">
+      <div class="panel-head">
+        <div>
+          <h2>Assembly / Encoding</h2>
+          <p>JS assembler generates real 24-bit machine code. Little-endian memory bytes appear in brackets.</p>
+        </div>
+      </div>
+      <div class="split-code">
+        <div>
+          <h3>Assembly</h3>
+          <ol id="assemblyList" class="code-list"></ol>
+        </div>
+        <div>
+          <h3>24-bit encoding view</h3>
+          <ol id="machineList" class="code-list machine-list"></ol>
+        </div>
+      </div>
+      <details class="output-detail"><summary>Generated assembly text (Compiler → Assembler boundary)</summary><textarea id="assemblyOutput" readonly spellcheck="false" aria-label="Generated assembly"></textarea></details>
+    </section>
+
+    <section class="panel controls-panel">
+      <div class="control-row">
+        <button id="resetBtn">Reset</button>
+        <button id="stepBtn" class="primary">Step</button>
+        <button id="runBtn">Run</button>
+        <button id="finishBtn">Run to End</button>
+        <label class="speed-label">Speed
+          <select id="speedSelect">
+            <option value="900">0.8×</option>
+            <option value="550" selected>1×</option>
+            <option value="260">2×</option>
+          </select>
+        </label>
+      </div>
+      <div id="stageStrip" class="stage-strip" aria-label="CPU execution phases"></div>
+      <div id="pipelinePanel" class="pipeline-panel" hidden>
+        <div class="pipeline-head"><strong>Pipeline registers · current clock</strong><span id="pipelineStatus"></span></div>
+        <div id="pipelineSlots" class="pipeline-slots" aria-live="polite"></div>
+        <div class="pipeline-hint">IF/ID → ID/EX → EX/MEM → MEM/WB. Each tile shows its occupied instruction; bubbles have valid=0. Hover to inspect raw instruction word.</div>
+      </div>
+    </section>
+
+    <section class="panel console-panel">
+      <div class="panel-head"><div><h2>Program stdout / exit</h2><p>ECALL services: putchar, getchar, exit. stdin is provided at load time.</p></div></div>
+      <pre id="programStdout" class="program-stdout" aria-live="polite"></pre>
+      <p id="programExit" class="program-exit">Not running</p>
+    </section>
+
+    <section class="panel datapath-panel">
+      <div class="panel-head">
+        <div>
+          <h2 id="architectureHeading">WA824 Datapath</h2>
+          <p id="architectureDescription">Loading selected CPU architecture…</p>
+        </div>
+        <div class="legend"><span class="dot active-dot"></span> active path</div>
+      </div>
+      <div class="datapath-scroll">
+        <svg id="datapath" viewBox="0 0 1180 560" role="img" aria-label="Selected CPU datapath"></svg>
+      </div>
+    </section>
+
+    <section class="panel state-panel">
+      <div class="state-grid">
+        <div>
+          <h2>Current state</h2>
+          <dl id="stateSummary" class="kv"></dl>
+        </div>
+        <div>
+          <h2>Signals</h2>
+          <dl id="signalSummary" class="kv"></dl>
+        </div>
+        <div class="register-card">
+          <h2>Physical registers</h2>
+          <div id="registerGrid" class="register-grid"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel notes-panel">
+      <h2>Replacement boundary</h2>
+      <p>Select a CPU plugin from cpus/. Each plugin supplies cpu.json, architecture.json, adapter.js, and implementation/. A server restart or page refresh picks up newly added plugins. CPU steps update the corresponding datapath diagram.</p>
+      <div class="port-grid">
+        <code>CompilerPort.compile(source) → assembly</code>
+        <code>AssemblerPort.assemble(assembly) → bytes[]</code>
+        <code>CpuPort.load(bytes[]) / step() → snapshot</code>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./src/app.js"></script>
+</body>
+</html>

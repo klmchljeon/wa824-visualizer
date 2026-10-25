@@ -1,0 +1,321 @@
+{
+  "schemaVersion": 1,
+  "id": "wa824-original",
+  "name": "WA824 original multicycle datapath",
+  "description": "IFU fetches three bytes; separate 8-bit ALU and 16-bit address datapath. Existing v4 educational diagram.",
+  "viewBox": [
+    0,
+    0,
+    1180,
+    560
+  ],
+  "phases": [
+    {
+      "id": "FETCH0",
+      "label": "FETCH 0"
+    },
+    {
+      "id": "FETCH1",
+      "label": "FETCH 1"
+    },
+    {
+      "id": "FETCH2",
+      "label": "FETCH 2"
+    },
+    {
+      "id": "DECODE",
+      "label": "DECODE"
+    },
+    {
+      "id": "EXECUTE",
+      "label": "EXECUTE"
+    },
+    {
+      "id": "COMMIT",
+      "label": "COMMIT"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "pc",
+      "x": 45,
+      "y": 45,
+      "width": 100,
+      "height": 100,
+      "radius": 12,
+      "label": "PC Unit",
+      "details": [
+        "16-bit · PC+3"
+      ],
+      "labelY": 42.0,
+      "detailYs": [
+        65.0
+      ]
+    },
+    {
+      "id": "ifu",
+      "x": 245,
+      "y": 45,
+      "width": 120,
+      "height": 100,
+      "radius": 12,
+      "label": "IFU",
+      "details": [
+        "PC+0 / +1 / +2",
+        "3 × 8-bit fetch"
+      ],
+      "labelY": 38.0,
+      "detailYs": [
+        61.0,
+        79.0
+      ]
+    },
+    {
+      "id": "ir",
+      "x": 455,
+      "y": 45,
+      "width": 120,
+      "height": 100,
+      "radius": 12,
+      "label": "24-bit IR",
+      "details": [
+        "Instruction"
+      ],
+      "labelY": 41.0,
+      "detailYs": [
+        65.0
+      ]
+    },
+    {
+      "id": "decoder",
+      "x": 665,
+      "y": 45,
+      "width": 140,
+      "height": 100,
+      "radius": 12,
+      "label": "Decoder",
+      "details": [
+        "Opcode / Funct",
+        "Immediate Gen"
+      ],
+      "labelY": 35.0,
+      "detailYs": [
+        58.0,
+        76.0
+      ]
+    },
+    {
+      "id": "controller",
+      "x": 880,
+      "y": 45,
+      "width": 155,
+      "height": 100,
+      "radius": 12,
+      "label": "Main Sequencer",
+      "details": [
+        "semantic control",
+        "FETCH / EXEC / COMMIT"
+      ],
+      "labelY": 34.0,
+      "detailYs": [
+        57.0,
+        75.0
+      ]
+    },
+    {
+      "id": "rf",
+      "x": 395,
+      "y": 235,
+      "width": 175,
+      "height": 140,
+      "radius": 14,
+      "label": "Register File",
+      "details": [
+        "8 × 16-bit physical",
+        "Byte Read A",
+        "Byte Read B",
+        "Word Read W"
+      ],
+      "labelY": 31.0,
+      "detailYs": [
+        55.0,
+        77.0,
+        95.0,
+        113.0
+      ]
+    },
+    {
+      "id": "alu",
+      "x": 735,
+      "y": 260,
+      "width": 140,
+      "height": 110,
+      "radius": 14,
+      "label": "8-bit ALU",
+      "details": [
+        "A / B / Result",
+        "ADD · SUB · logic"
+      ],
+      "labelY": 40.0,
+      "detailYs": [
+        66.0,
+        84.0
+      ]
+    },
+    {
+      "id": "wb",
+      "x": 985,
+      "y": 260,
+      "width": 145,
+      "height": 105,
+      "radius": 14,
+      "label": "Writeback",
+      "details": [
+        "BYTE_ALU",
+        "LOAD / LINK"
+      ],
+      "labelY": 37.0,
+      "detailYs": [
+        61.0,
+        79.0
+      ]
+    },
+    {
+      "id": "mem",
+      "x": 45,
+      "y": 245,
+      "width": 135,
+      "height": 100,
+      "radius": 12,
+      "label": "Memory",
+      "details": [
+        "16-bit addr",
+        "8-bit data"
+      ],
+      "labelY": 39.0,
+      "detailYs": [
+        63.0,
+        80.0
+      ]
+    },
+    {
+      "id": "lsu",
+      "x": 60,
+      "y": 415,
+      "width": 120,
+      "height": 100,
+      "radius": 12,
+      "label": "LSU",
+      "details": [
+        "LOAD8 / STORE8"
+      ],
+      "labelY": 41.0,
+      "detailYs": [
+        65.0
+      ]
+    },
+    {
+      "id": "agu",
+      "x": 275,
+      "y": 420,
+      "width": 120,
+      "height": 95,
+      "radius": 12,
+      "label": "16-bit AGU",
+      "details": [
+        "address / target"
+      ],
+      "labelY": 37.0,
+      "detailYs": [
+        61.0
+      ]
+    },
+    {
+      "id": "branch",
+      "x": 725,
+      "y": 425,
+      "width": 160,
+      "height": 95,
+      "radius": 12,
+      "label": "Branch Unit",
+      "details": [
+        "EQ · NE · LT · LTU"
+      ],
+      "labelY": 36.0,
+      "detailYs": [
+        60.0
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "pc-ifu",
+      "path": "M145 95 H245"
+    },
+    {
+      "id": "ifu-ir",
+      "path": "M365 95 H455"
+    },
+    {
+      "id": "ir-decoder",
+      "path": "M575 95 H665"
+    },
+    {
+      "id": "decoder-rf",
+      "path": "M735 145 V235 H495"
+    },
+    {
+      "id": "rf-alu-a",
+      "path": "M570 300 H735"
+    },
+    {
+      "id": "rf-alu-b",
+      "path": "M570 330 H735"
+    },
+    {
+      "id": "decoder-alu",
+      "path": "M805 145 V260"
+    },
+    {
+      "id": "alu-wb",
+      "path": "M875 315 H985"
+    },
+    {
+      "id": "wb-rf",
+      "path": "M1040 365 V470 H455 V375"
+    },
+    {
+      "id": "rf-branch",
+      "path": "M520 375 V430 H725"
+    },
+    {
+      "id": "branch-pc",
+      "path": "M805 470 H1030 V185 H85 V145"
+    },
+    {
+      "id": "rf-agu",
+      "path": "M405 375 V465 H335"
+    },
+    {
+      "id": "decoder-agu",
+      "path": "M690 145 V430 H395"
+    },
+    {
+      "id": "agu-lsu",
+      "path": "M275 465 H180"
+    },
+    {
+      "id": "lsu-mem",
+      "path": "M120 420 V345"
+    },
+    {
+      "id": "mem-ifu",
+      "path": "M180 285 H305 V145"
+    },
+    {
+      "id": "lsu-wb",
+      "path": "M180 465 H1040 V365"
+    }
+  ],
+  "isa": "WA824"
+}
