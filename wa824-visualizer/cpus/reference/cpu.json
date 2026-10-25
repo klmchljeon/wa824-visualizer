@@ -1,9 +1,0 @@
-{
-  "schemaVersion": 1,
-  "id": "reference",
-  "name": "JS reference CPU",
-  "description": "Original WA824 6-phase educational execution model",
-  "isa": "WA824",
-  "adapter": "./adapter.js",
-  "architecture": "./architecture.json"
-}
