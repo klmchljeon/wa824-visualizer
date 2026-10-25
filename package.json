@@ -1,0 +1,7 @@
+{
+  "name": "wa824-visualizer",
+  "private": true,
+  "version": "0.4.1",
+  "type": "module",
+  "scripts": {"test": "node --test tests/*.test.js"}
+}

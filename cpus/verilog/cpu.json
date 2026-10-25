@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "id": "verilog",
+  "name": "Verilog CPU (Icarus)",
+  "description": "Original WA824 multi-cycle RTL via Icarus trace runner",
+  "isa": "WA824",
+  "adapter": "./adapter.js",
+  "architecture": "./architecture.json"
+}
